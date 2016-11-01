@@ -26,19 +26,19 @@ services:
     networks:
       app_net:
         ipv4_address: 172.16.238.2
-  meh:
-    container_name: meh
-    build: ./meh/
+  pixelmap:
+    container_name: pixelmap
+    build: ./app/
     stdin_open: true
     tty: true
-    image: password
+    image: pixelmap
     ports:
       - "80:80"
     networks:
        app_net:
          ipv4_address: 172.16.238.4
     volumes:
-      - C:/Users/Zora/Desktop/Docker/ThePasswordIs:/tmp
+      - .:/root
 networks:
   app_net:
     driver: bridge
