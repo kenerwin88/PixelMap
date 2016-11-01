@@ -1,0 +1,49 @@
+version: '2'
+services:
+  miner:
+    container_name: miner
+    build: ./geth/
+    image: kenerwin88/geth
+    environment:
+      nodekey: f3f35c113098a36596ae74498135509baefa3b76c694ef2785bcc6d6308d4c0d
+      staticNodes: '["enode://3bea824aef6afa7d4f393742ec813813a0a90e5668c7bc0a9c35055082efe383f0871ebf74748d20a073c69eeb64c3e917de88afc2845b4551e2129fc8d11e96@172.16.238.2:30303"]'
+      mine: --mine --minerthreads=1
+    ports:
+      - "8546:8545"
+    networks:
+      app_net:
+        ipv4_address: 172.16.238.3
+  geth:
+    container_name: geth
+    build: ./geth/
+    image: kenerwin88/geth
+    environment:
+      nodekey: ad52ef8e39e9e661bbcd88c1e8e702a3c5955b667ea89928ce5f745f6c8ba4eb
+      staticNodes: '["enode://5bef8065bde3a79402e6c89c12c364e0f586609f2caf2312e87a478e0f74f44cd75d86f6a8144f1fca83e8cbeb760dfebb800519068266f7022c32aeef61660a@172.16.238.3:30303"]'
+      mine: ''
+    ports:
+      - "8547:8545"
+    networks:
+      app_net:
+        ipv4_address: 172.16.238.2
+  meh:
+    container_name: meh
+    build: ./meh/
+    stdin_open: true
+    tty: true
+    image: password
+    ports:
+      - "80:80"
+    networks:
+       app_net:
+         ipv4_address: 172.16.238.4
+    volumes:
+      - C:/Users/Zora/Desktop/Docker/ThePasswordIs:/tmp
+networks:
+  app_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.16.238.0/24
+        gateway: 172.16.238.1
