@@ -1,9 +1,9 @@
-pragma solidity ^0.4.3;
-contract MEH {
-    mapping (uint => address) owners;
-    mapping (uint => string) colors;
-    mapping (uint => string) urls;
-    mapping (uint => uint) prices;
+pragma solidity ^0.4.2;
+contract PixelMap {
+    mapping (uint => address) public owners;
+    mapping (uint => string) public colors;
+    mapping (uint => string) public urls;
+    mapping (uint => uint) public prices;
     address creator;
 
     // Constructor

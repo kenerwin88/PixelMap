@@ -1,0 +1,17 @@
+NO 1299 x 770 = 1000230
+NO 1,000,230 / 64 = 15,628.59
+NO 81.1875 x
+
+GOOD
+1,296 x 784 = 1,016,064 pixels OR 3,969 (256px) spaces
+3,969 * 10 Ethereum = 39,690 total ether * 10 USD = $396,900 total
+Mac 256 colors, No transparency, No Dither, no Matte
+
+I need 3 bytes
+
+One byte can hold number between 0 & 255
+1 byte = 8 bits
+So i need 3 * 8, 24 bits unsigned
+uint24
+
+[000123111,000123111,000123111,000123111,000123111,000123111,000123111,000123111,000123111,000123111,000123111,000123111,000123111,000123111,000123111,000123111]
