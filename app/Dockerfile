@@ -7,4 +7,4 @@ RUN wget https://github.com/ethcore/parity/releases/download/v1.3.9/parity_1.3.9
 RUN dpkg -i parity_1.3.9-0_amd64.deb
 COPY chain.json /home/chain.json
 # pip install json-rpc web3
-# pip install eth-testrpc
+# pip install eth-testrpc pillow
