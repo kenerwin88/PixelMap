@@ -35,14 +35,28 @@ def hex_to_rgb(value):
     lv = len(value)
     return tuple(int(value[i:i + lv // 3], 16) for i in range(0, lv, lv // 3))
 
-
+f = open("owners.csv", "w")  # opens file with name of "test.txt"
+f2 = open("urls.csv", "w")  # opens file with name of "test.txt"
+firstLoop = False
 for x in range(81):    # for every pixel:
+    if (firstLoop):
+        f.write("\n")
+        f2.write("\n")
+    firstLoop = True
     for y in range(49):
         tile = contract.call().getTile(x, y)
-
+        url_data = tile[1]
         image_data = tile[2]
+        if not url_data:
+            url_data = 'pixelmap.io'
         if not image_data:
             image_data = '000000000000000000000000000000000000000000000000000777AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBAAA000000AAAFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFDDD000000AAAFFFFFFEEEEEEEEEEEEEEEEEEEEEEEEEEEFFFDDD000000AAAFFFEEEEEEFFFFFFEEEEEEFFFFFFEEEEEEFFFDDD000000AAAFFFEEEFFFAAA999DDDEEEAAAAAAEEEEEEFFFDDD000000AAAFFFEEEFFF999777BBBBBB888888EEEEEEFFFDDD000000AAAFFFEEEEEEDDDBBB888888AAADDDEEEEEEFFFDDD000000AAAFFFEEEEEEEEEBBB888777AAAEEEEEEEEEFFFDDD000000AAAFFFEEEFFFAAA888AAAAAA888AAAEEEEEEFFFDDD000000AAAFFFEEEFFFAAA888DDDEEEAAA888EEEEEEFFFDDD000000AAAFFFEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEFFFDDD000000AAAFFFEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEFFFDDD000000BBBFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEEE000000AAADDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDBBB000000000000000000000000000000000000000000000000000'
+        if (y == 48):
+            f.write(tile[0])
+            f2.write(url_data)
+        else:
+            f.write(tile[0] + ",")
+            f2.write(url_data + ",")
 
         rgb_image_data = []
         for pixel in chunk_str(image_data, 3):
@@ -58,5 +72,6 @@ for x in range(81):    # for every pixel:
                 pixels[i, j] = (pixel[0], pixel[1], pixel[2])
         file_name = str(x) + "x" + str(y)
         img.save('images/' + str(x) + "x" + str(y) + ".png")
-
+f.close()
+f2.close()
 print 'Now finished!'

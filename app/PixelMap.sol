@@ -1,3 +1,6 @@
+//
+// PixelMap.io
+//
 pragma solidity ^0.4.2;
 contract PixelMap {
     mapping (uint => address) public owners;
@@ -61,7 +64,7 @@ contract PixelMap {
     }
 
     // Set an already owned Tile to whatever you'd like.
-    function setPixel(uint x, uint y, string image, string url, uint price) {
+    function setTile(uint x, uint y, string image, string url, uint price) {
         uint location = getPos(x, y);
         if (owners[location] != msg.sender) {throw;} // Pixel not owned by you!
         else {
