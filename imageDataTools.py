@@ -1,7 +1,12 @@
+"""
 
+python2 or python3.
 
+"""
 
+import itertools
 from collections import deque
+
 
 
 ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -9,6 +14,17 @@ ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 def assert_equals(thing0, thing1):
     assert thing0 == thing1, "{} does not equal {}.".format(thing0, thing1)
+
+
+
+def gen_chunks(input_seq, length):
+    labeling_function = (lambda toLabel: toLabel[0]//length)
+    labled_group_gen = itertools.groupby(enumerate(input_seq), labeling_function)
+    unlabled_group_gen = (labeledGroup[1] for labeledGroup in labled_group_gen)
+    #remove enumeration:
+    result = ((itemB[1] for itemB in unlabledGroup) for unlabledGroup in unlabled_group_gen)
+    return result
+
 
 
 def int_to_base(value, base):
@@ -60,9 +76,13 @@ def int8rgb_pixels_to_hex(pixels, chars_per_channel=2, pixel_header="", pixel_de
     return pixel_delimiter.join(pixel_generator)
     
 
-def int8rgb_pixel_rows_to_hex(pixel_rows, row_header="", row_delimiter="", **other_kwargs):
-    row_generator = (row_header + int8rgb_pixels_to_hex(pixel_row, **other_kwargs) for pixel_row in pixel_rows)
-    return row_delimiter.join(row_generator)
+def int8rgb_pixel_rows_to_hex(pixels, auto_row_length=None, row_header="", row_delimiter="", **other_kwargs):
+    if auto_row_length is not None:
+        input_row_generator = gen_chunks(pixels, length=auto_row_length)
+    else:
+        input_row_generator = pixels
+    output_row_generator = (row_header + int8rgb_pixels_to_hex(pixel_row, **other_kwargs) for pixel_row in input_row_generator)
+    return row_delimiter.join(output_row_generator)
 
 
 
@@ -78,11 +98,14 @@ def gen_triplet_tuples_from_int_seq(int_seq):
         
         
 def int_lists_to_triplet_tuple_lists(int_list_seq):
-    
+    raise NotImplementedError()
 
 
+
+
+
     
-def test():   
+def test():
     assert_equals(int8rgb_color_to_hex([255,255,255], component_delimiter="!"), "ff!ff!ff")
 
     for test_int in [0,1,2,3,5,8,13,21,34,55,127,128,129,255]:
@@ -92,6 +115,9 @@ def test():
     assert_equals(int8rgb_color_to_hex([14,15,16], length=1, component_header="?", component_delimiter="!"), "?0!?0!?1")
 
     assert_equals(int8rgb_pixels_to_hex([[14,15,16], [30,31,32]], chars_per_channel=2, pixel_header="#", component_delimiter=","), "#0e,0f,10#1e,1f,20")
+    
+    assert_equals(int8rgb_pixel_rows_to_hex([[14,15,16], [30,31,32]], auto_row_length=2), int8rgb_pixels_to_hex([[14,15,16], [30,31,32]]))
+
 
 test()
 
