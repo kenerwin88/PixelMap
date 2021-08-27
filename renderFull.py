@@ -1,5 +1,7 @@
 # Renders Full Image
 from PIL import Image
+
+
 full_image = Image.new('RGB', (1296, 784), "black")  # create a new black image
 pixels = full_image.load()  # create the pixel map
 for x in range(81):    # for every pixel:
