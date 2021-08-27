@@ -1,6 +1,7 @@
 
 
 import os
+import re
 
 from PIL import Image
 
@@ -31,7 +32,7 @@ def save_int8rgb_tuples_as_half_hex(data, output_filename=None, mode=None, decor
         return result
 
 
-def print_all(folder_name, file_delimiter="\n---\n", file_decoration="{name}: {content}"):
+def print_all(folder_name, line_length=48, file_delimiter="\n---\n", file_decoration="{name}:\n{content}"):
     justStarted = True
     for scanFileName in os.listdir(folder_name):
         scanFullFileName = folder_name + "/" + scanFileName
@@ -41,6 +42,23 @@ def print_all(folder_name, file_delimiter="\n---\n", file_decoration="{name}: {c
             justStarted = False
         else:
             print(file_delimiter)
-        print(printString)  
+        if line_length is not None:
+            print_wrapped(printString, line_length=line_length)
+        else:
+            print(printString)
+
+
+
+
+def print_wrapped(text, line_length=80):
+    for line in text.split("\n"):
+        i = 0
+        while i < len(line):
+            print(line[i:i+line_length])
+            i += line_length
+
+
+
+
 
 assert save_int8rgb_tuples_as_half_hex(get_image_int8rgb_pixels("images/1x1.png"), pixel_header="") =='390390390390390390390000000390390390390390390390390390390390390390000ff0ff0000390390390390390390390390390390390390000ff0ff0000390390390390390390390390390390390000ff0ff0ff0ff0000390390390390390000000000000000000ff0ff0ff0ff0000000000000000000000ff0ff0ff0ff0ff0ff0ff0ff0ff0ff0ff0ff0ff0ff0000390000ff0ff0ff0ff0000ff0ff0000ff0ff0ff0ff0000390390390000ff0ff0ff0000ff0ff0000ff0ff0ff0000390390390390390000ff0ff0000ff0ff0000ff0ff0000390390390390390390000ff0ff0ff0ff0ff0ff0ff0ff0000390390390390390000ff0ff0ff0ff0ff0ff0ff0ff0ff0ff0000390390390390000ff0ff0ff0ff0ff0ff0ff0ff0ff0ff0000390390390000ff0ff0ff0ff0ff0000000ff0ff0ff0ff0ff0000390390000ff0ff0ff0000000390390000000ff0ff0ff0000390000ff0ff0000000390390390390390390000000ff0ff0000000000000390390390390390390390390390390000000000'
